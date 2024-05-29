@@ -1,0 +1,76 @@
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
+<!--  <div class="navbar-dark bg-dark" id="miniHackerNews">-->
+<!--    <ul class="navbar-nav mr-auto">-->
+<!--      <li class="nav-item active">-->
+<!--        <a class="nav-link" href="#">Mini Hacker News |<span class="sr-only"></span></a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#"> New Post |</a>-->
+<!--      </li>-->
+<!--      <li class="nav-item">-->
+<!--        <a class="nav-link" href="#"> Logout |</a>-->
+<!--      </li>-->
+<!--    </ul>-->
+<!--  </div>-->
+<!--</nav>-->
+
+
+<nav class="navbar navbar-light" style="background-color: #e3f2fd;" data-mdb-theme="light">
+</nav>
+<table class="table table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Votes</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of posts ; index as i">
+      <td>{{ i+1 }}</td>
+      <td>{{ post.points }}</td>
+      <td>{{ post.title }}</td>
+      <td>{{ post.created_by }}</td>
+      <td>
+        <button class="btn btn-primary btn-sm" ng-click= ""><span class="glyphicon glyphicon-arrow-up"></span> Upvote </button>
+        <button class="btn btn-danger btn-sm" ng-click= ""><span class="glyphicon glyphicon-arrow-down"></span> Downvote</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+<!--<head>-->
+<!--  <title>Mini Hacker News</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--  <h1>Posts</h1>-->
+<!--  <table class="table table-striped">-->
+<!--    <thead>-->
+<!--      <tr>-->
+<!--        <th>Title</th>-->
+<!--        <th>Points</th>-->
+<!--        <th>Author</th>-->
+<!--      </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--      <tr *ngFor="let post of posts">-->
+<!--        <td>{{ post.title }}</td>-->
+<!--        <td>{{ post.points }}</td>-->
+<!--        <td>{{ post.created_by }}</td>-->
+<!--      </tr>-->
+<!--    </tbody>-->
+<!--  </table>-->
+<!--</div>-->
+
+<!--<script src="https://unpkg.com/tslib@1.14.0/tslib.min.js"></script>-->
+<!--<script src="https://unpkg.com/@angular/core@14.0.0/fesm2015/core.min.js"></script>-->
+<!--<script src="https://unpkg.com/@angular/platform-browser-dynamic@14.0.0/fesm2015/platform-browser-dynamic.min.js"></script>-->
+<!--<script src="./app.module.ts"></script>-->
+<!--<script src="./app.component.ts"></script>-->
+<!--</body>-->
