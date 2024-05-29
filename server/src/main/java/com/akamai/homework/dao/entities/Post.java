@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.Date;
 
 @Data
@@ -18,8 +16,13 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int points;
+
     @Column
-    int points = 0;
+    private int upvotes = 0;
+
+    @Column
+    private int downvotes = 0;
 
     @Column
     private Date createdOn = new Date();
@@ -34,7 +37,6 @@ public class Post {
 
     @NonNull
     @Column
-
     private String text;
 
     @ManyToOne
@@ -44,5 +46,9 @@ public class Post {
 
     public Post() {
 
+    }
+
+    public int getPoints() {
+        return (upvotes - downvotes);
     }
 }

@@ -1,6 +1,6 @@
 package com.akamai.homework.controllers;
 
-import com.akamai.homework.dao.entities.Post;
+import com.akamai.homework.dao.dto.PostDto;
 import com.akamai.homework.services.PostService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -77,9 +76,9 @@ public class PostController {
 //    }
 
     @GetMapping("/getPostsSortedAndByPaging")
-    public ResponseEntity<Page<Post>> getPostsSortedAndByPaging(@RequestParam(name = "page", defaultValue = "0") int page,
-                                                                    @RequestParam(name = "size", defaultValue = "10") int size,
-                                                                    @RequestParam(defaultValue = "asc") String sortDirection) {
+    public ResponseEntity<Page<PostDto>> getPostsSortedAndByPaging(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                                   @RequestParam(name = "size", defaultValue = "10") int size,
+                                                                   @RequestParam(defaultValue = "asc") String sortDirection) {
         try {
             Sort sort = Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "createdOn")
                     .and(Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "points"));

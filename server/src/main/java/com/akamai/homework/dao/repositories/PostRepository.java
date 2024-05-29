@@ -16,11 +16,19 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Post p set p.points = ?2 where p.id = ?1")
-    void updatePointsById(Long id, int points) throws Exception;
+    @Query("update Post p set p.upvotes = ?2 where p.id = ?1")
+    void updateUpvotesPointsById(Long id, int points) throws Exception;
 
-    @Query("select p.points from Post p where p.id = ?1")
-    int selectPointsById(Long id);
+    @Transactional
+    @Modifying
+    @Query("update Post p set p.downvotes = ?2 where p.id = ?1")
+    void updateDownvotesPointsById(Long id, int points) throws Exception;
+
+    @Query("select p.upvotes from Post p where p.id = ?1")
+    int selectUpvotesPointsById(Long id);
+
+    @Query("select p.downvotes from Post p where p.id = ?1")
+    int selectDownvotesPointsById(Long id);
 
     @Query("select p.text from Post p where p.id = ?1")
     String selectTextById(Long id);
