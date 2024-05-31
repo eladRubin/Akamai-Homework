@@ -1,22 +1,20 @@
-<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">-->
-<!--  <div class="navbar-dark bg-dark" id="miniHackerNews">-->
-<!--    <ul class="navbar-nav mr-auto">-->
-<!--      <li class="nav-item active">-->
-<!--        <a class="nav-link" href="#">Mini Hacker News |<span class="sr-only"></span></a>-->
-<!--      </li>-->
-<!--      <li class="nav-item">-->
-<!--        <a class="nav-link" href="#"> New Post |</a>-->
-<!--      </li>-->
-<!--      <li class="nav-item">-->
-<!--        <a class="nav-link" href="#"> Logout |</a>-->
-<!--      </li>-->
-<!--    </ul>-->
-<!--  </div>-->
-<!--</nav>-->
-
-
-<nav class="navbar navbar-light" style="background-color: #e3f2fd;" data-mdb-theme="light">
+<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark" xmlns="http://www.w3.org/1999/html">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mini Hacker News</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+<!--          <a class="nav-link" href="/createPost">Create New Post</a>-->
+          <button class="btn btn-secondary btn-sm" (click)="openNewPostModal()"><span class="glyphicon glyphicon-arrow-down"></span>Create New Post</button>
+        </li>
+      </ul>
+    </div>
+  </div>
 </nav>
+
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>
@@ -34,43 +32,56 @@
       <td>{{ post.title }}</td>
       <td>{{ post.created_by }}</td>
       <td>
-        <button class="btn btn-primary btn-sm" ng-click= ""><span class="glyphicon glyphicon-arrow-up"></span> Upvote </button>
-        <button class="btn btn-danger btn-sm" ng-click= ""><span class="glyphicon glyphicon-arrow-down"></span> Downvote</button>
+        <button class="btn btn-primary btn-sm" (click) = "upvote()"><span class="glyphicon glyphicon-arrow-up"></span> Upvote </button>
+        <button class="btn btn-danger btn-sm" (click) = "downvote()"><span class="glyphicon glyphicon-arrow-down"></span> Downvote</button>
+        <button class="btn btn-secondary btn-sm" (click)="openPostDetails(post)"><span class="glyphicon glyphicon-arrow-down"></span> View Text</button>
       </td>
     </tr>
   </tbody>
 </table>
 
+<div class="modal" id="postDetailsModal" tabindex="-1" aria-labelledby="postDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="postDetailsModalLabel">{{ selectedPost?.title }}</h5>
+        <button type="button" class="btn-close" (click) = "closePostDetails()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p><b>Text:</b> {{ selectedPost?.text }} </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click) = "closePostDetails()" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-
-
-<!--<head>-->
-<!--  <title>Mini Hacker News</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="container">-->
-<!--  <h1>Posts</h1>-->
-<!--  <table class="table table-striped">-->
-<!--    <thead>-->
-<!--      <tr>-->
-<!--        <th>Title</th>-->
-<!--        <th>Points</th>-->
-<!--        <th>Author</th>-->
-<!--      </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--      <tr *ngFor="let post of posts">-->
-<!--        <td>{{ post.title }}</td>-->
-<!--        <td>{{ post.points }}</td>-->
-<!--        <td>{{ post.created_by }}</td>-->
-<!--      </tr>-->
-<!--    </tbody>-->
-<!--  </table>-->
-<!--</div>-->
-
-<!--<script src="https://unpkg.com/tslib@1.14.0/tslib.min.js"></script>-->
-<!--<script src="https://unpkg.com/@angular/core@14.0.0/fesm2015/core.min.js"></script>-->
-<!--<script src="https://unpkg.com/@angular/platform-browser-dynamic@14.0.0/fesm2015/platform-browser-dynamic.min.js"></script>-->
-<!--<script src="./app.module.ts"></script>-->
-<!--<script src="./app.component.ts"></script>-->
-<!--</body>-->
+<div class="modal" id="newPostModal" tabindex="-1" aria-labelledby="newPostModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="newPostModalLabel">New Post</h5>
+        <button type="button" class="btn-close" (click) = "closeNewPostModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+        <b><label for="disabledTextInput" class="form-label">Title:</label></b>
+        <input type="text" id="disabledTextInput" [(ngModel)]="newPostTitle" class="form-control" placeholder="Title">
+          <form>
+            <div class="form-group">
+              <label><b>Text:</b></label>
+              <textarea class="form-control" rows="7" [(ngModel)]="newPostText" name="texterea"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form>{{ newPostTitle }}</form>
+        <form>{{ newPostText }}</form>
+        <button type="submit" class="btn btn-primary" (click) = "submitNewPost()">Submit</button>
+        <button type="button" class="btn btn-secondary" (click) = "closeNewPostModal()" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

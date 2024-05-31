@@ -2,6 +2,7 @@ package com.akamai.homework.controllers;
 
 import com.akamai.homework.dao.dto.PostDto;
 import com.akamai.homework.services.PostService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 @Slf4j
 public class PostController {
     PostService postService;
@@ -28,7 +30,8 @@ public class PostController {
     public ResponseEntity<String> addPost(@RequestParam(name = "userId") String userId, @RequestParam(name = "postTitle") String postTitle,
                           @RequestParam(name = "postText") String postText) {
         try {
-            return ResponseEntity.ok(postService.addPost(userId, postTitle, postText));
+            String responseJson = new ObjectMapper().writeValueAsString(postService.addPost(userId, postTitle, postText));
+            return ResponseEntity.ok(responseJson);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -38,7 +41,8 @@ public class PostController {
     public ResponseEntity<String> editPostText(@RequestParam(name = "id") String id,
                                @RequestParam(name = "newText") String newText) {
         try {
-            return  ResponseEntity.ok(postService.editPostText(id, newText));
+            String responseJson = new ObjectMapper().writeValueAsString(postService.editPostText(id, newText));
+            return ResponseEntity.ok(responseJson);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -48,7 +52,8 @@ public class PostController {
     @PostMapping("/upvote")
     public ResponseEntity<String> upvotingPost(@RequestParam(name = "id") String id, @RequestParam(name = "upvoted_by") String userId) {
         try {
-            return ResponseEntity.ok(postService.upvotingPost(id, userId));
+            String responseJson = new ObjectMapper().writeValueAsString(postService.upvotingPost(id, userId));
+            return ResponseEntity.ok(responseJson);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -58,7 +63,8 @@ public class PostController {
     @PostMapping("/downvote")
     public ResponseEntity<String> downvotingPost(@RequestParam(name = "id") String id, @RequestParam(name = "downvote_by") String userId) {
         try {
-            return ResponseEntity.ok(postService.downvotingPost(id, userId));
+            String responseJson = new ObjectMapper().writeValueAsString(postService.downvotingPost(id, userId));
+            return ResponseEntity.ok(responseJson);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
