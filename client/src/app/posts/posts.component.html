@@ -1,20 +1,4 @@
-<nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark" xmlns="http://www.w3.org/1999/html">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Mini Hacker News</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-<!--          <a class="nav-link" href="/createPost">Create New Post</a>-->
-          <button class="btn btn-secondary btn-sm" (click)="openNewPostModal()"><span class="glyphicon glyphicon-arrow-down"></span>Create New Post</button>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-
+<button type="button" class="btn btn-info btn-sm" (click)="openNewPostModal()"><i class="bi bi-upload"></i> Create New Post</button>
 <table class="table table-striped">
   <thead class="thead-dark">
     <tr>

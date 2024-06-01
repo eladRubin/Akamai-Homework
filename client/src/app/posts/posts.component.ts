@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PostDto } from './post-dto.interface';
 import { Page } from './post-dto.interface';
+import { StorageService } from '../services/storage.service';
 
 @Component({
   selector: 'app-posts',
@@ -16,17 +17,20 @@ export class PostComponent implements OnInit, AfterViewInit {
   newPostText: any;
   // edit post ngModels
   editPostText: any;
-  constructor(private http: HttpClient, @Inject('environment') private env: any) {}
+  constructor(private http: HttpClient, @Inject('environment') private env: any, private storageService: StorageService) {
+
+  }
 
   ngAfterViewInit () {
 
   }
 
-  ngOnInit () {
+  ngOnInit (): void {
     this.refreshScopeData();
   }
 
   refreshScopeData () {
+    const headers = { 'content-type': 'application/json' };
     this.http.get<Page<PostDto>>(`${this.env.baseUrl}/api/getPostsSortedAndByPaging`, {
          params: { page: 0, size: 10 } //TODO: get it dynamically from page
         }).subscribe(page => {
@@ -39,7 +43,7 @@ export class PostComponent implements OnInit, AfterViewInit {
     const headers = { 'content-type': 'application/json' };
     let params = new HttpParams();
     params = params.set('id', this.selectedPost.id);
-    params = params.set('upvoted_by', 1);
+    params = params.set('upvoted_by', this.storageService.getUser().id);
 
     this.http.post<any>(`${this.env.baseUrl}/api/upvote`, {},{
       headers: headers,
@@ -57,7 +61,7 @@ export class PostComponent implements OnInit, AfterViewInit {
     const headers = { 'content-type': 'application/json' };
     let params = new HttpParams();
     params = params.set('id', this.selectedPost.id);
-    params = params.set('downvote_by', 1);
+    params = params.set('downvote_by', this.storageService.getUser().id);
 
     this.http.post<any>(`${this.env.baseUrl}/api/downvote`, {},{
       headers: headers,
@@ -102,7 +106,7 @@ export class PostComponent implements OnInit, AfterViewInit {
   submitNewPost() {
    const headers = { 'content-type': 'application/json' };
       let params = new HttpParams();
-      params = params.set('userId', 1); //TODO: get real id
+      params = params.set('userId', this.storageService.getUser().id);
       params = params.set('postTitle', this.newPostTitle);
       params = params.set('postText', this.newPostText);
 
@@ -136,9 +140,9 @@ export class PostComponent implements OnInit, AfterViewInit {
   }
 
   submitUpdatedPost() {
-    const headers = { 'content-type': 'application/json' };
+    const headers = { 'content-type': 'application/json' }; //TODO: replace with const httpOptions variable
       let params = new HttpParams();
-      params = params.set('postId', this.selectedPost.id); //TODO: get real id
+      params = params.set('postId', this.selectedPost.id);
       params = params.set('newText', this.editPostText);
 
       this.http.post<any>(`${this.env.baseUrl}/api/editPost`, {},{

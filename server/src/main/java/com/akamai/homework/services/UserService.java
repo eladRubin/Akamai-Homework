@@ -2,36 +2,46 @@ package com.akamai.homework.services;
 
 import com.akamai.homework.dao.entities.User;
 import com.akamai.homework.dao.repositories.UserRepository;
+import com.akamai.homework.security.payload.request.SignupRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @Slf4j
 @Service
 public class UserService {
     UserRepository userRepository;
-
     @Autowired
-    public UserService(UserRepository userRepository) {
+    PasswordEncoder encoder;
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder encoder) {
         this.userRepository = userRepository;
+        this.encoder = encoder;
     }
 
-    public String addUser (String userName, String password) {
+    public String addUser (String userName, String email, String password) {
         log.info("adding user to the system: {}", userName);
-        User newUser = new User(userName, password);
+        User newUser = new User(userName, email, password);
         userRepository.saveAndFlush(newUser);
         return "saved"; // TODO: implement logic
     }
 
-    public String updateUser (String id) {
-        log.info("updateUser with id: {}", id);
-        User newUser = new User("elad", "12345"); //TODO: change to userName from Request
-        userRepository.saveAndFlush(newUser);
-        return "Updated";
-    }
+    public String registerUser(SignupRequest signUpRequest) throws Exception {
+        if (userRepository.existsByUserName(signUpRequest.getUsername())) {
+            throw new Exception("Error: Username is already taken!");
+        }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            throw new Exception("Error: Email is already in use!");
+        }
+
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()));
+
+        userRepository.saveAndFlush(user);
+
+        return "User registered successfully!";
     }
 }

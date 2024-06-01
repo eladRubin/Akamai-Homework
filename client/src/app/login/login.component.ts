@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { StorageService } from '../services/storage.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -6,23 +8,45 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
+  form: any = {
+    username: null,
+    password: null
+  };
+  isLoggedIn = false;
+  isLoginFailed = false;
+  errorMessage = '';
 
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
-
-  constructor(private router: Router) { }
+  constructor(private authService: AuthService, private storageService: StorageService, private router: Router) { }
 
   ngOnInit(): void {
+    if (this.storageService.isLoggedIn()) {
+      this.isLoggedIn = true;
+      window.location.reload();
+      this.router.navigate(['/posts']);
+    }
   }
 
-  login() {
-    // Replace with your authentication logic (e.g., API call)
-    if (this.username === 'admin' && this.password === 'admin') {
-      this.router.navigate(['/']); // Redirect to home page on success
-    } else {
-      this.errorMessage = 'Invalid username or password';
-    }
+  onSubmit(): void {
+    const { username, password } = this.form;
+
+    this.authService.login(username, password).subscribe({
+      next: data => {
+        this.storageService.saveUser(data);
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.router.navigate(['/posts']);
+      },
+      error: err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
+        this.reloadPage();
+      }
+    });
+  }
+
+  reloadPage(): void {
+    window.location.reload();
   }
 }

@@ -9,12 +9,14 @@ import { FormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { PostComponent } from './posts/posts.component';
 import { environment } from './environments/environment';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    PostComponent
+    PostComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
