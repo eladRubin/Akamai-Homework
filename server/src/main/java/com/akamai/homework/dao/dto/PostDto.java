@@ -10,11 +10,13 @@ public class PostDto {
     private String title;
     private String text;
     private String created_by;
+    private String created_on;
     public PostDto(Post post) {
         this.id = post.getId();
         this.title = post.getTitle();
         this.text = post.getText();
         this.points = post.getPoints();
         this.created_by = post.getCreatedBy();
+        this.created_on = post.getCreatedOn();
     }
 }

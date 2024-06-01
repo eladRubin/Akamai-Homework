@@ -11,26 +11,34 @@ import { Page } from './post-dto.interface';
 export class PostComponent implements OnInit, AfterViewInit {
   posts: PostDto[] = [];
   selectedPost: any;
+  // new post ngModels
   newPostTitle: any;
   newPostText: any;
+  // edit post ngModels
+  editPostText: any;
   constructor(private http: HttpClient, @Inject('environment') private env: any) {}
 
-  ngAfterViewInit() {
+  ngAfterViewInit () {
 
   }
 
-  ngOnInit() {
+  ngOnInit () {
+    this.refreshScopeData();
+  }
+
+  refreshScopeData () {
     this.http.get<Page<PostDto>>(`${this.env.baseUrl}/api/getPostsSortedAndByPaging`, {
-     params: { page: 0, size: 10 } //TODO: get it dynamically from page
-    }).subscribe(page => {
-        this.posts = page.content;
-    });
+         params: { page: 0, size: 10 } //TODO: get it dynamically from page
+        }).subscribe(page => {
+            this.posts = page.content;
+        });
   }
 
-  upvote () {
+  upvote (post: PostDto) {
+    this.selectedPost = post;
     const headers = { 'content-type': 'application/json' };
     let params = new HttpParams();
-    params = params.set('id', 1);
+    params = params.set('id', this.selectedPost.id);
     params = params.set('upvoted_by', 1);
 
     this.http.post<any>(`${this.env.baseUrl}/api/upvote`, {},{
@@ -38,15 +46,17 @@ export class PostComponent implements OnInit, AfterViewInit {
       params: params
     }).subscribe(response => {
         console.log('Upvoted successfully:', response);
+        this.refreshScopeData();
       }, error => {
         console.error('Error upvoting:', error);
       });
   }
 
-  downvote () {
+  downvote (post: PostDto) {
+    this.selectedPost = post;
     const headers = { 'content-type': 'application/json' };
     let params = new HttpParams();
-    params = params.set('id', 1);
+    params = params.set('id', this.selectedPost.id);
     params = params.set('downvote_by', 1);
 
     this.http.post<any>(`${this.env.baseUrl}/api/downvote`, {},{
@@ -54,6 +64,7 @@ export class PostComponent implements OnInit, AfterViewInit {
       params: params
     }).subscribe(response => {
         console.log('Downvoted successfully:', response);
+        this.refreshScopeData();
       }, error => {
         console.error('Error downvoted:', error);
       });
@@ -81,29 +92,72 @@ export class PostComponent implements OnInit, AfterViewInit {
     }
   }
 
-    closeNewPostModal() {
-      const modal = document.getElementById('newPostModal');
+  closeNewPostModal() {
+    const modal = document.getElementById('newPostModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  submitNewPost() {
+   const headers = { 'content-type': 'application/json' };
+      let params = new HttpParams();
+      params = params.set('userId', 1); //TODO: get real id
+      params = params.set('postTitle', this.newPostTitle);
+      params = params.set('postText', this.newPostText);
+
+      this.http.post<any>(`${this.env.baseUrl}/api/addPost`, {},{
+        headers: headers,
+        params: params
+      }).subscribe(response => {
+          console.log('Post added successfully:', response);
+          this.refreshScopeData();
+          this.closeNewPostModal();
+        }, error => {
+          console.error('Error adding post:', error);
+          this.closeNewPostModal();
+        });
+  }
+
+  openEditPostModal(post: PostDto) {
+    this.selectedPost = post;
+    this.editPostText = this.selectedPost.text;
+    const modal = document.getElementById('editPostModal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  }
+
+  closeEditPostModal() {
+      const modal = document.getElementById('editPostModal');
       if (modal) {
         modal.style.display = 'none';
       }
+  }
+
+  submitUpdatedPost() {
+    const headers = { 'content-type': 'application/json' };
+      let params = new HttpParams();
+      params = params.set('postId', this.selectedPost.id); //TODO: get real id
+      params = params.set('newText', this.editPostText);
+
+      this.http.post<any>(`${this.env.baseUrl}/api/editPost`, {},{
+        headers: headers,
+        params: params
+      }).subscribe(response => {
+          console.log('Post edited successfully:', response);
+          this.refreshScopeData();
+          this.closeEditPostModal();
+        }, error => {
+          console.error('Error edit post:', error);
+          this.closeEditPostModal();
+        });
     }
 
-    submitNewPost() {
-     const headers = { 'content-type': 'application/json' };
-        let params = new HttpParams();
-        params = params.set('userId', 1);
-        params = params.set('postTitle', this.newPostTitle);
-        params = params.set('postText', this.newPostText);
-
-        this.http.post<any>(`${this.env.baseUrl}/api/addPost`, {},{
-          headers: headers,
-          params: params
-        }).subscribe(response => {
-            console.log('Post added successfully:', response);
-            this.closeNewPostModal();
-          }, error => {
-            console.error('Error adding post:', error);
-            this.closeNewPostModal();
-          });
+    onTextAreaValueChange(event: Event) {
+      if(event) {
+       const value = (event.target as any).value;
+            this.editPostText = value;
+      }
     }
 }

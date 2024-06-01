@@ -22,6 +22,7 @@
       <th scope="col">Votes</th>
       <th scope="col">Title</th>
       <th scope="col">Author</th>
+      <th scope="col">Created On</th>
       <th scope="col">Actions</th>
     </tr>
   </thead>
@@ -31,10 +32,12 @@
       <td>{{ post.points }}</td>
       <td>{{ post.title }}</td>
       <td>{{ post.created_by }}</td>
+      <td>{{ post.created_on }}</td>
       <td>
-        <button class="btn btn-primary btn-sm" (click) = "upvote()"><span class="glyphicon glyphicon-arrow-up"></span> Upvote </button>
-        <button class="btn btn-danger btn-sm" (click) = "downvote()"><span class="glyphicon glyphicon-arrow-down"></span> Downvote</button>
-        <button class="btn btn-secondary btn-sm" (click)="openPostDetails(post)"><span class="glyphicon glyphicon-arrow-down"></span> View Text</button>
+        <button type="button" class="btn btn-primary btn-sm" (click) = "upvote(post)"><i class="bi bi-hand-thumbs-up"></i> Upvote </button>
+        <button type="button" class="btn btn-danger btn-sm" (click) = "downvote(post)"><i class="bi bi-hand-thumbs-down"></i> Downvote</button>
+        <button type="button" class="btn btn-success btn-sm" (click)="openPostDetails(post)"><i class="bi bi-eye"></i> View Post</button>
+        <button type="button" class="btn btn-secondary btn-sm" (click)="openEditPostModal(post)"><i class="bi bi-pencil"></i> Edit Post</button>
       </td>
     </tr>
   </tbody>
@@ -66,8 +69,8 @@
       </div>
       <div class="modal-body">
         <div class="container">
-        <b><label for="disabledTextInput" class="form-label">Title:</label></b>
-        <input type="text" id="disabledTextInput" [(ngModel)]="newPostTitle" class="form-control" placeholder="Title">
+        <b><label for="newModalTextInput" class="form-label">Title:</label></b>
+        <input type="text" id="newModalTextInput" [(ngModel)]="newPostTitle" class="form-control" placeholder="Title">
           <form>
             <div class="form-group">
               <label><b>Text:</b></label>
@@ -77,10 +80,34 @@
         </div>
       </div>
       <div class="modal-footer">
-        <form>{{ newPostTitle }}</form>
-        <form>{{ newPostText }}</form>
         <button type="submit" class="btn btn-primary" (click) = "submitNewPost()">Submit</button>
         <button type="button" class="btn btn-secondary" (click) = "closeNewPostModal()" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+        <button type="button" class="btn-close" (click) = "closeEditPostModal()" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <b><label id="editPostModalTextInput" class="form-label">Title:</label></b>{{ selectedPost?.title }}
+          <form>
+            <div class="form-group">
+              <label><b>Text:</b></label>
+              <textarea class="form-control" rows="7" [value]="editPostText" (input)="onTextAreaValueChange($event)" name="edittexterea"></textarea>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary" (click) = "submitUpdatedPost()">Submit</button>
+        <button type="button" class="btn btn-secondary" (click) = "closeEditPostModal()" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

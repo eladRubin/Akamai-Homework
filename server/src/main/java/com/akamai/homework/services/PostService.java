@@ -83,24 +83,6 @@ public class PostService {
 
         return UPDATED_POINTS_SUCCESSFULLY_MESSAGE;
     }
-//TODO: remove if not needed!!!
-
-//    public List<String> getAllTopics() {
-//        return postRepository.findAll().stream()
-//        .map(Post::getTitle)
-//        .distinct()
-//        .collect(Collectors.toList());
-//    }
-//
-//    public String getTextById(String id) {
-//        try {
-//            return postRepository.selectTextById(Long.parseLong(id));
-//        } catch (Exception e) {
-//            log.error("could not get text for post: {}, {}", id, e.toString());
-//        }
-//
-//        return null;
-//    }
 
     public Page<PostDto> getPostsSortedAndByPaging(Pageable pageable) throws Exception {
         try {

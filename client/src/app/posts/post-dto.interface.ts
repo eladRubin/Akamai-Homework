@@ -4,6 +4,7 @@ export interface PostDto {
   title: string;
   text: string;
   created_by: string;
+  created_on: string
 }
 
 export interface Page<T> {

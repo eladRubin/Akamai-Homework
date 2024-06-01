@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import com.akamai.homework.common.Utils;
 import java.util.Date;
 
 @Data
@@ -50,5 +51,8 @@ public class Post {
 
     public int getPoints() {
         return (upvotes - downvotes);
+    }
+    public String getCreatedOn () {
+        return Utils.getSimpleDateFormat(createdOn);
     }
 }

@@ -38,7 +38,7 @@ public class PostController {
     }
 
     @PostMapping("/editPost")
-    public ResponseEntity<String> editPostText(@RequestParam(name = "id") String id,
+    public ResponseEntity<String> editPostText(@RequestParam(name = "postId") String id,
                                @RequestParam(name = "newText") String newText) {
         try {
             String responseJson = new ObjectMapper().writeValueAsString(postService.editPostText(id, newText));
@@ -69,17 +69,6 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-//TODO: remove if not needed
-
-//    @GetMapping("/getAllTopics")
-//    public List<String> getAllTopics() {
-//        return postService.getAllTopics();
-//    }
-//
-//    @GetMapping("/getText")
-//    public String getTextById(@RequestParam(name = "id") String id) {
-//        return postService.getTextById(id);
-//    }
 
     @GetMapping("/getPostsSortedAndByPaging")
     public ResponseEntity<Page<PostDto>> getPostsSortedAndByPaging(@RequestParam(name = "page", defaultValue = "0") int page,
