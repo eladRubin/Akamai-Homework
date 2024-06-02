@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { PostComponent } from './posts/posts.component';
 import { environment } from './environments/environment';
 import { RegisterComponent } from './register/register.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { RegisterComponent } from './register/register.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule
   ],
   providers: [
     provideClientHydration(),

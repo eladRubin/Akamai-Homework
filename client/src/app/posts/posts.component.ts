@@ -17,6 +17,11 @@ export class PostComponent implements OnInit, AfterViewInit {
   newPostText: any;
   // edit post ngModels
   editPostText: any;
+  // pagination
+  totalItems: number = 1000;
+  pageSize: number = 10;
+  currentPage: number = 1;
+  totalNumberOfPages: number = 1;
   constructor(private http: HttpClient, @Inject('environment') private env: any, private storageService: StorageService) {
 
   }
@@ -32,10 +37,22 @@ export class PostComponent implements OnInit, AfterViewInit {
   refreshScopeData () {
     const headers = { 'content-type': 'application/json' };
     this.http.get<Page<PostDto>>(`${this.env.baseUrl}/api/getPostsSortedAndByPaging`, {
-         params: { page: 0, size: 10 } //TODO: get it dynamically from page
+         params: { page: this.currentPage - 1, size: this.pageSize }
         }).subscribe(page => {
+            this.totalItems = page.totalElements;
+            this.totalNumberOfPages = page.totalPages;
             this.posts = page.content;
         });
+  }
+
+  onPageChange(event:any) {
+    this.currentPage = event;
+    this.http.get<Page<PostDto>>(`${this.env.baseUrl}/api/getPostsSortedAndByPaging`, {
+       params: { page: this.currentPage - 1, size: this.pageSize }
+      }).subscribe(page => {
+          this.totalNumberOfPages = page.totalPages;
+          this.posts = page.content;
+      });
   }
 
   upvote (post: PostDto) {

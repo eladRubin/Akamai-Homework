@@ -9,4 +9,6 @@ export interface PostDto {
 
 export interface Page<T> {
   content: T[];
+  totalPages: any
+  totalElements: any
 }

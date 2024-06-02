@@ -11,8 +11,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let post of posts ; index as i">
-      <td>{{ i+1 }}</td>
+    <tr *ngFor="let post of posts  | paginate: { itemsPerPage: pageSize, currentPage: currentPage, totalItems: totalItems } ; index as i">
+      <td>{{ i + 1 }}</td>
       <td>{{ post.points }}</td>
       <td>{{ post.title }}</td>
       <td>{{ post.created_by }}</td>
@@ -95,4 +95,8 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination-controls *ngIf="totalNumberOfPages > 1" previousLabel="Prev" nextLabel="Next" (pageChange)="onPageChange($event)"></pagination-controls>
 </div>
