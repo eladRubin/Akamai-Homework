@@ -75,8 +75,8 @@ public class PostController {
                                                                    @RequestParam(name = "size", defaultValue = "10") int size,
                                                                    @RequestParam(defaultValue = "asc") String sortDirection) {
         try {
-            Sort sort = Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "createdOn")
-                    .and(Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "points"));
+            Sort sort = Sort.by(sortDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, "points")
+                    .and(Sort.by(Sort.Direction.DESC, "createdOn"));
 
             Pageable pageable = PageRequest.of(page, size, sort);
             return ResponseEntity.ok(postService.getPostsSortedAndByPaging(pageable));
