@@ -20,13 +20,6 @@ public class UserService {
         this.encoder = encoder;
     }
 
-    public String addUser (String userName, String email, String password) {
-        log.info("adding user to the system: {}", userName);
-        User newUser = new User(userName, email, password);
-        userRepository.saveAndFlush(newUser);
-        return "saved"; // TODO: implement logic
-    }
-
     public String registerUser(SignupRequest signUpRequest) throws Exception {
         if (userRepository.existsByUserName(signUpRequest.getUsername())) {
             throw new Exception("Error: Username is already taken!");
