@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
-      window.location.reload();
       this.router.navigate(['/posts']);
     }
   }

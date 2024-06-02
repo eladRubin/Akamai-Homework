@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { StorageService } from './services/storage.service';
 import { AuthService } from './services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RoutesRecognized, Event, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +13,15 @@ export class AppComponent {
   isLoggedIn = false;
   username?: string;
 
-  constructor(private storageService: StorageService, private authService: AuthService, private router: Router) { }
+  constructor(private storageService: StorageService, private authService: AuthService, private router: Router) {
+     router.events.subscribe((event: Event) => {
+          if (event instanceof NavigationStart) {
+            if (event.url == '/posts') {
+               this.isLoggedIn = this.storageService.isLoggedIn();
+            }
+          }
+    });
+  }
 
   ngOnInit(): void {
      this.isLoggedIn = this.storageService.isLoggedIn();
@@ -24,15 +32,14 @@ export class AppComponent {
    }
 
    logout(): void {
-       this.authService.logout().subscribe({
-         next: res => {
-           console.log(res);
-           this.storageService.clean();
-           window.location.reload();
-         },
-         error: err => {
-           console.log(err);
-         }
-       });
-     }
+     this.authService.logout().subscribe({
+       next: res => {
+         console.log(res);
+         this.storageService.clean();
+       },
+       error: err => {
+         console.log(err);
+       }
+     });
+   }
 }
