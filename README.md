@@ -2,7 +2,7 @@ Technologies used in the project
 --------------------------------
   1. Java + Springboot 3.2.5 + JPA
   2. Angular 18
-  3. Mysql ruuning on doker
+  3. Mysql ruuning on docker
   4. Session managment with Coockies created by server and holding JWT for vailading user logged in the entire session (spring-boot-starter-security)
      
 Running the application (make sure you have Docker engine install and running)
