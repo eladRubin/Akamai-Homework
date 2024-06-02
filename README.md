@@ -19,17 +19,17 @@ RestAPI calls
 ------------------
    AuthController:
 ------------------
-  1. /api/auth/signup - parameters:String username, String email, String password return value: ResponseEntity
-  2. /api/auth/signin - parameters:String username, String password return value: ResponseEntity
-  3. /api/auth/logout - parameters:none return value: ResponseEntity
+  1. /api/auth/signup (signup first time to the system) - parameters:String username, String email, String password return value: ResponseEntity
+  2. /api/auth/signin (login to the system with user and password) - parameters:String username, String password return value: ResponseEntity
+  3. /api/auth/logout (signout from the system)- parameters:none return value: ResponseEntity
 
  -----------------
    PostController: 
  -----------------
-  1. /api/addPost   - parameters:String userId, String title, String text return value: ResponseEntity
-  2. /api/editPost  - parameters:String postId, String newText return value: ResponseEntity
-  3. /api/upvote    - parameters:String id, String upvoted_by return value: ResponseEntity
-  4. /api/downvote  - parameters:String id, String downvoted_by return value: ResponseEntity
-  5. /api/getPostsSortedAndByPaging  - parameters:int page, int size, String sortDirection return value: ResponseEntity
+  1. /api/addPost (add new post)  - parameters:String userId, String title, String text return value: ResponseEntity
+  2. /api/editPost (add existing post's text)  - parameters:String postId, String newText return value: ResponseEntity
+  3. /api/upvote (upvoting a post) - parameters:String id, String upvoted_by return value: ResponseEntity
+  4. /api/downvote (downvoting a post) - parameters:String id, String downvoted_by return value: ResponseEntity
+  5. /api/getPostsSortedAndByPaging (getAllpostsSorted) - parameters:int page, int size, String sortDirection return value: ResponseEntity
 
 
